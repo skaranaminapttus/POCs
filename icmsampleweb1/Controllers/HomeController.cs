@@ -32,7 +32,7 @@ namespace icmsampleweb1.Controllers
 
             qr.AddMessage(new CloudQueueMessage(somedata));
 
-            return "Deployment3:- Triggered classification job successfully at:" + DateTime.Now;
+            return "Deployment1:- Triggered classification job successfully at:" + DateTime.Now;
         }
     }
 }
