@@ -21,18 +21,28 @@ namespace icmsampleweb1.Controllers
         [Route("home/startclassification/{somedata}")]
         public string StartClassification(string somedata)
         {
-            
-            var storgaeAccout = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=incentivecomp3379;AccountKey=KGgmx8bzsRLA1gN4rKVp/kB82Fdlu4axSRNH2apmgW37baW9n1lxDMGqfjArLpwRXbkCfwbbY4BrRiHnGLZpdQ==");
+            TriggerWebjob(somedata);
 
-            var qc = storgaeAccout.CreateCloudQueueClient();
+            return "Deployment2:- Triggered classification job successfully at:" + DateTime.Now;
+        }
 
-            var qr = qc.GetQueueReference("queue");
+        private static void TriggerWebjob(string somedata)
+        {
+            var storgaeAccout = GetStorgaeAccout();
 
-            qr.CreateIfNotExists();
+            var queueClient = storgaeAccout.CreateCloudQueueClient();
 
-            qr.AddMessage(new CloudQueueMessage(somedata));
+            var queueReference = queueClient.GetQueueReference("queue");
 
-            return "Deployment1:- Triggered classification job successfully at:" + DateTime.Now;
+            queueReference.CreateIfNotExists();
+
+            queueReference.AddMessage(new CloudQueueMessage(somedata));
+        }
+
+        private static CloudStorageAccount GetStorgaeAccout()
+        {
+            return CloudStorageAccount.Parse(
+                "DefaultEndpointsProtocol=https;AccountName=incentivecomp3379;AccountKey=KGgmx8bzsRLA1gN4rKVp/kB82Fdlu4axSRNH2apmgW37baW9n1lxDMGqfjArLpwRXbkCfwbbY4BrRiHnGLZpdQ==");
         }
     }
 }
